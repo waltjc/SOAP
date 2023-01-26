@@ -1,10 +1,15 @@
 <?php
-
 	require "nusoap.php";
 	$client = new nusoap_client("http://localhost/aulasoap/service.php?wsdl", 'wsdl');
 	$nomeLivro = $_REQUEST['nomeLivro'];
 	$preco = $client->call("preco",array('nome' => "$nomeLivro"));
 
+	$clientcalc = new nusoap_client("http://www.dneonline.com/calculator.asmx?WSDL", 'wsdl');
+
+	$a = 19283;
+	$b = 993;
+
+	$resultado = $clientcalc->call("Multiply", array("intA" => "$a", "intB" => "$b"));
 ?>
 
 <html>
@@ -23,8 +28,12 @@
 			}
 		</style>
 		<div class='box'>
-			<h2>Preço do livro <?php echo $nomeLivro.":";?></h2>
+			<h2>Preço do livro</h2>
 			<h1> <?php echo $preco;?></h1>
+		</div>
+		<div class='box'>
+			<h2>Calculadora Livro</h2>
+			<?php echo $resultado["MultiplyResponse"]; ?>
 		</div>
 	</body>
 </html>
